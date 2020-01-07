@@ -11,12 +11,14 @@ public class PlayerAttack : MonoBehaviour
     public LayerMask whatIsEnemies;
     public float attackRange;
     public int damage;
+
+    private Animator myAnimator;
     
 
     // Start is called before the first frame update
     void Start()
     {
-
+        myAnimator = GetComponent<Animator>();
         
     }
 
@@ -27,6 +29,9 @@ public class PlayerAttack : MonoBehaviour
             timeBtwAttack = startTimeBtwAttack;
 
             if(Input.GetKey(KeyCode.C)){
+                //Run animation after attack
+                myAnimator.SetTrigger("Attack");
+
                 Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
 
                 for (int i = 0; i < enemiesToDamage.Length; i++)
