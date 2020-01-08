@@ -32,15 +32,14 @@ public class PlayerAttack : MonoBehaviour
                 //Run animation after attack
                 myAnimator.SetTrigger("Attack");
 
-                Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
+                Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
 
-                for (int i = 0; i < enemiesToDamage.Length; i++)
+                for (int i = 0; i < enemies.Length; i++)
                 {
-                    if(enemiesToDamage[i]!=null && enemiesToDamage[i].GetComponent<Enemy>()!=null)
-                    enemiesToDamage[i].GetComponent<Enemy>().TakeDamage(damage);
-                }
+                    if(enemies[i]!=null && enemies[i].GetComponent<Enemy>()!=null)
+                    enemies[i].GetComponent<Enemy>().TakeDamage(damage);
 
-                 
+                }      
             }
         } else {
             timeBtwAttack -= Time.deltaTime;

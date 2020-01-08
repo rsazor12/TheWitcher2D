@@ -8,6 +8,12 @@ public class EnemyPatrol : MonoBehaviour
     public bool movingRight = true;
     public Transform groundDetection;
     public float distance = 2f;
+    public bool stop = false;
+
+    //To detect player is nearby
+    public Transform detectPlayerPos;
+    public LayerMask whatIsPlayer;
+    public float detectionRange;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +24,18 @@ public class EnemyPatrol : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Collider2D[] player = Physics2D.OverlapCircleAll(detectPlayerPos.position, detectionRange, whatIsPlayer);
+
+        // if(player.Length !=0 && player[0].GetComponent<PlayerAttack>()!=null)
+        //     Debug.Log("Detected!" + player.Length);
+    
+        // Check if player nearby
+        if(player.Length !=0 && player[0]!=null && player[0].GetComponent<PlayerAttack>()!=null){
+            transform.Translate(Vector2.right * 0 * Time.deltaTime); // stop
+            return;
+        }
+            
+
         transform.Translate(Vector2.right * speed * Time.deltaTime);
 
         RaycastHit2D groundInfo = Physics2D.Raycast(groundDetection.position, Vector2.down, distance);
@@ -33,8 +51,12 @@ public class EnemyPatrol : MonoBehaviour
                 transform.eulerAngles = new Vector3(0, 0, 0);
                 movingRight = true;
             }
-        }
+        }       
+    }
 
-         
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(detectPlayerPos.position, detectionRange);
     }
 }
